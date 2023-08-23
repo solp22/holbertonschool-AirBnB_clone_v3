@@ -84,6 +84,7 @@ class FileStorage:
             if cls in self.all().items():
                 for item in self.all(cls):
                     counter = counter + 1
-        for item in self.all().items():
-            counter = counter + 1
-        return counter
+        else:
+            for item in self.all().items():
+                counter = counter + 1
+            return counter
