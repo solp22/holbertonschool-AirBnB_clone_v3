@@ -91,4 +91,4 @@ class DBStorage:
         else:
             for item in self.all().items():
                 counter = counter + 1
-            return counter
+        return counter
