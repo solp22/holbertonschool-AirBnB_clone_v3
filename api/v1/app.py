@@ -20,7 +20,6 @@ def page_not_found(error):
     return make_response({"error": "Not found"}, 404)
 
 
-
 if __name__ == "__main__":
     if getenv("HBNB_API_HOST"):
         api_host = getenv("HBNB_API_HOST")
