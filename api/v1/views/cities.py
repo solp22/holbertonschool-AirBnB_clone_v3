@@ -4,12 +4,13 @@ from models.city import City
 from flask import abort, jsonify, request
 from api.v1.views import app_views
 from models import storage
+from models.state import State
 
 
 @app_views.route('/states/<state_id>/cities', methods=['GET'])
 def get_city_by_state(state_id):
     """Return cities in state"""
-    state = storage.get("State", state_id)
+    state = storage.get(State, state_id)
     if state is None:
         abort(404)
     city_list = []
@@ -21,7 +22,7 @@ def get_city_by_state(state_id):
 @app_views.route('/cities/<city_id>', methods=['GET'])
 def get_city_id(city_id):
     """Return city with id"""
-    city = storage.get("City", city_id)
+    city = storage.get(City, city_id)
     if city is None:
         abort(404)
     return jsonify(city.to_dict()), 200
@@ -30,7 +31,7 @@ def get_city_id(city_id):
 @app_views.route('/cities/<city_id>', methods=['DELETE'])
 def delete_city(city_id):
     """Dele city"""
-    city = storage.get("City", city_id)
+    city = storage.get(City, city_id)
     if city is None:
         abort(404)
     storage.delete(city)
@@ -48,7 +49,7 @@ def create_city(state_id):
     if "name" not in obj_data:
         abort(400, "Missing name")
 
-    state = storage.get("State", state_id)
+    state = storage.get(State, state_id)
     if state is None:
         abort(404)
     obj_data['state_id'] = state_id
@@ -61,7 +62,7 @@ def create_city(state_id):
 @app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
 def update_city(city_id):
     """Returns the City object with the status code 200"""
-    obj = storage.get("City", city_id)
+    obj = storage.get(City, city_id)
     if obj is None:
         abort(404)
 
