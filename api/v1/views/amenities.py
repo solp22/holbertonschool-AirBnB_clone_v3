@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-#!/usr/bin/python3
 """handle RESTful API in amenity"""
 from models.amenity import Amenity
 from flask import abort, jsonify, request
