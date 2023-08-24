@@ -45,7 +45,7 @@ def create_user():
 
     if "email" not in object_data:
         abort(400, "Missing email")
-    
+
     if "password" not in object_data:
         abort(400, "Missing password")
 
@@ -71,4 +71,3 @@ def update_user(user_id):
             setattr(obj, key, value)
     storage.save()
     return jsonify(obj.to_dict()), 200
- 
