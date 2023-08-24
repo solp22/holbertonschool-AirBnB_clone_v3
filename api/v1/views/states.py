@@ -17,7 +17,17 @@ def retrieve_list():
 
 @app_views.route('/states/<state_id>', methods=['GET'])
 def retrieve_state(state_id):
+    """Retrieve state object"""
     if storage.get(State, state_id) is None:
         abort(404)
     return storage.get(State, state_id).to_dict()
 
+@app_views.route('/states/<state_id>', methods=['DELETE'])
+def delete_state(state_id):
+    """Delete state"""
+    states = storage.get(State, state_id)
+    if states is None:
+        abort(404)
+    storage.delete(states)
+    storage.save()
+    return {}, 200
