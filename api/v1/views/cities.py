@@ -53,20 +53,24 @@ def create_city(state_id):
         abort(404)
     obj_data['state_id'] = state_id
     obj = City(**obj_data)
-    obj.save()
+    storage.new(obj)
+    storage.save()
     return jsonify(obj.to_dict()), 201
 
 
 @app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
 def update_city(city_id):
     """Returns the City object with the status code 200"""
-    if not request.get_json():
-        abort(400, "Not a JSON")
-
     obj = storage.get("City", city_id)
     if obj is None:
         abort(404)
+
     obj_data = request.get_json()
-    obj.name = obj_data['name']
-    obj.save()
+    if not obj_data:
+        abort(400, "Not a JSON")
+
+    for key, value in obj_data.items():
+        if key != 'id' and key != 'created_at' and key != 'updated_at':
+            setattr(obj, key, value)
+    storage.save()
     return jsonify(obj.to_dict()), 200
