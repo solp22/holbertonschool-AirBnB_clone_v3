@@ -1,0 +1,72 @@
+#!/usr/bin/python3
+"""handle RESTful API in state"""
+from models.city import City
+from flask import abort, jsonify, request
+from api.v1.views import app_views
+from models import storage
+
+
+@app_views.route('/states/<state_id>/cities', methods=['GET'])
+def get_city_by_state(state_id):
+    """Return cities in state"""
+    state = storage.get("State", state_id)
+    if state is None:
+        abort(404)
+    city_list = []
+    for city in state.cities:
+        city_list.append(city.to_dict())
+    [c.to_dict() for c in state.cities]
+    return jsonify(city_list), 200
+
+
+@app_views.route('/cities/<city_id>', methods=['GET'])
+def get_city_id(city_id):
+    """Return city with id"""
+    city = storage.get("City", city_id)
+    if city is None:
+        abort(404)
+    return jsonify(city.to_dict()), 200
+
+
+@app_views.route('/cities/<city_id>', methods=['DELETE'])
+def delete_city(city_id):
+    """Dele city"""
+    city = storage.get("City", city_id)
+    if city is None:
+        abort(404)
+    storage.delete(city)
+    storage.save()
+    return ({}), 200
+
+
+@app_views.route('/states/<state_id>/cities', methods=['POST'])
+def create_city(state_id):
+    """Creates a City: POST /api/v1/states/<state_id>/cities"""
+    if not request.get_json():
+        abort(400, "Not a JSON")
+    elif "name" not in request.get_json():
+        abort(400, "Missing name")
+    else:
+        obj_data = request.get_json()
+        state = storage.get("State", state_id)
+        if state is None:
+            abort(404)
+        obj_data['state_id'] = state.id
+        obj = City(**obj_data)
+        obj.save()
+        return jsonify(obj.to_dict()), 201
+
+
+@app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
+def update_city(city_id):
+    """Returns the City object with the status code 200"""
+    if not request.get_json():
+        abort(400, "Not a JSON")
+
+    obj = storage.get("City", city_id)
+    if obj is None:
+        abort(404)
+    obj_data = request.get_json()
+    obj.name = obj_data['name']
+    obj.save()
+    return jsonify(obj.to_dict()), 200
