@@ -7,7 +7,7 @@ from models import storage
 
 
 @app_views.route('/amenities', methods=['GET'])
-def retrieve_list():
+def retrieve_amen_list():
     """Retrives the list of all amenities"""
     amen_list = []
     amenities = storage.all(Amenity)
