@@ -13,15 +13,15 @@ def retrieve_list():
     states = storage.all(State)
     for state in states.values():
         states_list.append(state.to_dict())
-    return jsonify(states_list)
+    return states_list
 
 
 @app_views.route('/states/<state_id>', methods=['GET'])
 def retrieve_state(state_id):
-    """If the state_id is not linked to any State object, raise a 404 error"""
+    """Retrieve state object"""
     if storage.get(State, state_id) is None:
         abort(404)
-    return jsonify(storage.get(State, state_id).to_dict())
+    return storage.get(State, state_id).to_dict()
 
 
 @app_views.route('/states/<state_id>', methods=['DELETE'])
@@ -35,7 +35,7 @@ def delete_state(state_id):
     return {}, 200
 
 
-@app_views.route('/states', methods=['POST'])
+@app_views.route('/states/', methods=['POST'])
 def create_state():
     """Creates a State: POST /api/v1/states"""
     object_data = request.get_json()
