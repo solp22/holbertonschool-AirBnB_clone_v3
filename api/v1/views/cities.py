@@ -52,7 +52,7 @@ def create_city(state_id):
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
-    obj_data['state_id'] = state_id
+    obj_data['state_id'] = state.id
     obj = City(**obj_data)
     storage.new(obj)
     storage.save()
