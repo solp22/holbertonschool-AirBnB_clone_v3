@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
-handle RESTful API in state.
+handle RESTful API in Place.
+Create a new view for Place objects that handles all default RESTFul API actions:
 """
 from api.v1.views import app_views
 from flask import jsonify, request, abort
@@ -13,7 +14,10 @@ from models import storage
 @app_views.route('/cities/<city_id>/places', methods=['GET'],
                  strict_slashes=False)
 def get_place_by_city(city_id):
-    """Return places in city"""
+    """
+    Retrieves the list of all Place objects of a City:
+    GET /api/v1/cities/<city_id>/places
+    """
     city = storage.get(City, city_id)
     if city is None:
         abort(404)
@@ -25,7 +29,10 @@ def get_place_by_city(city_id):
 
 @app_views.route('/places/<place_id>', methods=['GET'], strict_slashes=False)
 def get_place_id(place_id):
-    """Return places with id"""
+    """
+    Retrieves a Place object. :
+    GET /api/v1/places/<place_id>
+    """
     place = storage.get(Place, place_id)
     if place is None:
         abort(404)
@@ -35,7 +42,9 @@ def get_place_id(place_id):
 @app_views.route('/places/<place_id>', methods=['DELETE'],
                  strict_slashes=False)
 def delete_place(place_id):
-    """Delete places"""
+    """
+    Returns an empty dictionary with the status code 200
+    """
     places = storage.get(Place, place_id)
     if places is None:
         abort(404)
@@ -47,7 +56,7 @@ def delete_place(place_id):
 @app_views.route('/cities/<city_id>/places', methods=['POST'],
                  strict_slashes=False)
 def create_place(city_id):
-    """create place"""
+    """Creates a Place: POST /api/v1/cities/<city_id>/places"""
     city = storage.get(City, city_id)
     if city is None:
         abort(404)
@@ -77,7 +86,7 @@ def create_place(city_id):
 
 @app_views.route('/places/<place_id>', methods=['PUT'], strict_slashes=False)
 def update_place(place_id):
-    """Update place"""
+    """Updates a Place object: PUT /api/v1/places/<place_id>"""
     obj = storage.get(Place, place_id)
     if obj is None:
         abort(404)
