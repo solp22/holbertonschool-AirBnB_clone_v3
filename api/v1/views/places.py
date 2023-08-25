@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-"""handle RESTful API in state"""
+"""
+handle RESTful API in state.
+"""
 from api.v1.views import app_views
 from flask import jsonify, request, abort
 from models.city import City
