@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
 handle RESTful API in Place.
-Create a new view for Place objects that handles all default RESTFul API actions:
+Create a new view for Place obj that handles all default RESTFul API actions:
 Method:
     ['GET']: For route /cities/<city_id>/places and /places/<place_id>
     ['DELETE']: For route /places/<place_id>
