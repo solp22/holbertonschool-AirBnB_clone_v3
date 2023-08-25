@@ -2,6 +2,11 @@
 """
 handle RESTful API in Place.
 Create a new view for Place objects that handles all default RESTFul API actions:
+Method:
+    ['GET']: For route /cities/<city_id>/places and /places/<place_id>
+    ['DELETE']: For route /places/<place_id>
+    ['POST']: For route /cities/<city_id>/places
+    ['PUT']: For route /places/<place_id>
 """
 from api.v1.views import app_views
 from flask import jsonify, request, abort
@@ -17,6 +22,8 @@ def get_place_by_city(city_id):
     """
     Retrieves the list of all Place objects of a City:
     GET /api/v1/cities/<city_id>/places
+    Return:
+        places in city
     """
     city = storage.get(City, city_id)
     if city is None:
@@ -32,6 +39,8 @@ def get_place_id(place_id):
     """
     Retrieves a Place object. :
     GET /api/v1/places/<place_id>
+    Return:
+        places with id
     """
     place = storage.get(Place, place_id)
     if place is None:
@@ -43,7 +52,9 @@ def get_place_id(place_id):
                  strict_slashes=False)
 def delete_place(place_id):
     """
-    Returns an empty dictionary with the status code 200
+    Delete to place object with espepecified id
+    Returns:
+        An empty dictionary with the status code 200
     """
     places = storage.get(Place, place_id)
     if places is None:
@@ -56,7 +67,11 @@ def delete_place(place_id):
 @app_views.route('/cities/<city_id>/places', methods=['POST'],
                  strict_slashes=False)
 def create_place(city_id):
-    """Creates a Place: POST /api/v1/cities/<city_id>/places"""
+    """
+    Creates a Place: POST /api/v1/cities/<city_id>/places
+    Return:
+        Create to place object and add method to_dict
+    """
     city = storage.get(City, city_id)
     if city is None:
         abort(404)
@@ -86,7 +101,11 @@ def create_place(city_id):
 
 @app_views.route('/places/<place_id>', methods=['PUT'], strict_slashes=False)
 def update_place(place_id):
-    """Updates a Place object: PUT /api/v1/places/<place_id>"""
+    """
+    Updates a Place object: PUT /api/v1/places/<place_id>
+    Return:
+        Update to place object and add method to_dict
+    """
     obj = storage.get(Place, place_id)
     if obj is None:
         abort(404)
